@@ -1,0 +1,268 @@
+/* ==========================================================
+   PORTFOLIO BTS – feuille de style commune à toutes les pages
+   Les couleurs et les polices se changent ici, dans :root
+   ========================================================== */
+ 
+:root {
+  --paper: #ffffff;        /* fond de page (blanc) */
+  --sky: #dff0ff;          /* bleu clair : fond de la fiche et des sections */
+  --sky-deep: #a9d4f5;     /* bleu clair plus soutenu */
+  --pink: #ff9cc2;         /* rose : boutons et surlignage */
+  --pink-soft: #ffe3ee;    /* rose très pâle */
+  --pink-deep: #c8266a;    /* rose foncé : liens et texte accentué (lisible sur blanc) */
+  --ink: #1d2b4a;          /* texte principal (bleu nuit) */
+  --muted: #5a6784;        /* texte secondaire */
+  --line: #d3e2f2;         /* filets */
+  --accent: var(--pink-deep);
+ 
+  --font-title: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+ 
+  --page: 1080px;
+  --gap: clamp(1.25rem, 4vw, 3rem);
+}
+ 
+*, *::before, *::after { box-sizing: border-box; }
+ 
+html { scroll-behavior: smooth; }
+ 
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+ 
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+ 
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+ 
+.wrap {
+  width: min(100% - 2 * var(--gap), var(--page));
+  margin-inline: auto;
+}
+ 
+/* ---------- En-tête / navigation ---------- */
+ 
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(8px);
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+ 
+.nav ul {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ 
+.nav a {
+  text-decoration: none;
+  font-weight: 500;
+  padding-block: 0.25rem;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.4s ease, color 0.2s ease, transform 0.4s ease;
+}
+ 
+.nav a:hover,
+.nav a.active,
+.nav a[aria-current="page"] {
+  border-bottom-color: var(--pink);
+  color: var(--accent);
+}
+ 
+/* ---------- Accueil (hero) ---------- */
+ 
+.hero {
+  padding-block: clamp(3rem, 9vw, 7rem);
+  background: linear-gradient(180deg, #fff 0%, var(--pink-soft) 100%);
+}
+ 
+.hero .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--gap);
+  align-items: end;
+}
+ 
+.hero h1 {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin: 0 0 1.5rem;
+}
+ 
+.hero .lead {
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  line-height: 1.5;
+  max-width: 34ch;
+  color: var(--muted);
+  margin: 0 0 2rem;
+}
+ 
+.actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+ 
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+ 
+.btn-primary {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: var(--ink);
+}
+.btn-primary:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+ 
+.btn-secondary { background: #fff; }
+.btn-secondary:hover { background: var(--ink); color: #fff; }
+ 
+/* Fiche d'identité : les infos utiles pour le jury */
+.fiche {
+  background: var(--sky);
+  color: var(--ink);
+  padding: 1.75rem;
+  border-radius: 24px;
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--pink);
+}
+ 
+.fiche h2 {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  margin: 0 0 1.25rem;
+  font-weight: 600;
+}
+ 
+.fiche dl { margin: 0; }
+.fiche div { padding-block: 0.7rem; border-top: 1px solid var(--sky-deep); }
+.fiche dt { font-size: 0.9rem; color: var(--muted); }
+.fiche dd { margin: 0; font-weight: 500; }
+ 
+/* Seule animation de la page : l'arrivée du titre */
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 { animation: arrivee 0.7s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes arrivee {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+ 
+/* ---------- Sections ---------- */
+ 
+.section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+#competences { background: var(--sky); }
+#contact { background: var(--pink-soft); }
+ 
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+ 
+.section h2 {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+}
+ 
+.text-link { font-weight: 600; color: var(--accent); }
+ 
+/* Liste de projets */
+.projects { list-style: none; margin: 0; padding: 0; }
+ 
+.project a {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) minmax(0, 14rem);
+  gap: 1rem var(--gap);
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+}
+.project:last-child a { border-bottom: 1px solid var(--line); }
+ 
+.project .year { color: var(--muted); }
+.project h3 {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.02em;
+}
+.project p { margin: 0; color: var(--muted); max-width: 55ch; }
+.project .tags { color: var(--muted); font-size: 0.95rem; }
+ 
+.project a:hover h3 { color: var(--accent); }
+.project a:hover { background: var(--pink-soft); }
+ 
+/* Compétences */
+.skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--gap);
+}
+.skills h3 { font-family: var(--font-title); font-size: 1.15rem; margin: 0 0 0.75rem; }
+.skills ul { margin: 0; padding: 0; list-style: none; }
+.skills li { padding-block: 0.4rem; border-top: 1px solid var(--sky-deep); }
+ 
+/* Contact */
+.contact-mail {
+  display: inline-block;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 5vw, 3rem);
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+ 
+/* Pied de page */
+.site-footer {
+  padding-block: 2rem;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.site-footer a { color: var(--pink-deep); }
+.site-footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+ 
+/* ---------- Mobile ---------- */
+ 
+@media (max-width: 760px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .project a { grid-template-columns: 1fr; gap: 0.35rem; }
+}
