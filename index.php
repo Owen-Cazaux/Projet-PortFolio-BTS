@@ -1,16 +1,13 @@
 <?php
-
-require __DIR__ . "/HTML-components/header.php";
-
+include __DIR__ . "/HTML-components/header.php";
 ?>
 
   <main>
 
-    <!-- ============ ACCUEIL ============ -->
     <section class="hero" id="accueil">
       <div class="wrap">
         <div>
-          <h1>Owen<br>Cazaux</h1>
+          <h1 class="prenom">Owen<br>Cazaux</h1>
           <p class="lead">
             Étudiant en BTS SIO SLAM. Je conçois et je réalise des sites & applications web, et je présente ici mes projets.
           </p>
@@ -23,59 +20,59 @@ require __DIR__ . "/HTML-components/header.php";
         <aside class="fiche" aria-labelledby="fiche-titre">
           <h2 id="fiche-titre">Mon profil</h2>
           <dl>
-            <div><dt>Formation</dt><dd>BTS [intitulé], 2e année</dd></div>
-            <div><dt>Établissement</dt><dd>[Nom du lycée], [Ville]</dd></div>
-            <div><dt>Recherche</dt><dd>Stage / alternance à partir de [mois année]</dd></div>
+            <div><dt>Formation</dt><dd>BTS SIO SLAM, 2e année</dd></div>
+            <div><dt>Établissement</dt><dd>institut d'informatique appliqué, Saint Berthevin</dd></div>
+            <div><dt>Recherche</dt><dd>Alternance à partir de Septembre 2027</dd></div>
             <div><dt>Session</dt><dd>Examen 2027</dd></div>
           </dl>
         </aside>
       </div>
     </section>
 
-    <!-- ============ PROJETS (aperçu) ============ -->
     <section class="section" id="projets">
       <div class="wrap">
         <div class="section-head">
           <h2>Projets</h2>
-          <a class="text-link" href="projets.html">Tous les projets</a>
+          <a class="text-link" href="Pages/MesProjets.php">Voir tous les projets</a>
         </div>
 
-        <ul class="projects">
-          <li class="project">
-            <a href="projet-1.html">
-              <span class="year">2026</span>
-              <span>
-                <h3>Titre du projet 1</h3>
-                <p>Une phrase pour dire ce que fait le projet et à quoi il sert.</p>
-              </span>
-              <span class="tags">HTML, CSS, JavaScript</span>
-            </a>
-          </li>
-          <li class="project">
-            <a href="projet-2.html">
-              <span class="year">2026</span>
-              <span>
-                <h3>Titre du projet 2</h3>
-                <p>Une phrase pour dire ce que fait le projet et à quoi il sert.</p>
-              </span>
-              <span class="tags">PHP, MySQL</span>
-            </a>
-          </li>
-          <li class="project">
-            <a href="projet-3.html">
-              <span class="year">2025</span>
-              <span>
-                <h3>Titre du projet 3</h3>
-                <p>Une phrase pour dire ce que fait le projet et à quoi il sert.</p>
-              </span>
-              <span class="tags">Python</span>
-            </a>
-          </li>
-        </ul>
+        <div class="projects-grid">
+          <article class="project-card">
+            <span class="year">2026</span>
+            <h3>Portfolio personnel</h3>
+            <p>Une vitrine web personnelle pour présenter mon profil, mes compétences et mes projets.</p>
+            <div class="tags">
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>PHP</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <span class="year">2026</span>
+            <h3>Application de gestion</h3>
+            <p>Une interface de gestion simple pour organiser des tâches, clients ou contenus avec une logique claire.</p>
+            <div class="tags">
+              <span>PHP</span>
+              <span>SQL</span>
+              <span>UI</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <span class="year">2025</span>
+            <h3>Site vitrine</h3>
+            <p>Un site marketing axé sur l’identification de marque, la lisibilité et la conversion.</p>
+            <div class="tags">
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>JavaScript</span>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <!-- ============ COMPÉTENCES ============ -->
     <section class="section" id="competences">
       <div class="wrap">
         <div class="section-head">
@@ -111,24 +108,9 @@ require __DIR__ . "/HTML-components/header.php";
       </div>
     </section>
 
-    <!-- ============ CONTACT (aperçu) ============ -->
-    <section class="section" id="contact">
-      <div class="wrap">
-        <div class="section-head">
-          <h2>Un message ?</h2>
-        </div>
-        <a class="contact-mail" href="mailto:">owen.cazaux2@gmail.com</a>
-      </div>
-    </section>
-
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap">
-      <span>© 2026 Owen Cazaux</span>
-      <span><a href="#">LinkedIn</a> · <a href="#">GitHub</a></span>
-    </div>
-  </footer>
+  <?php include __DIR__ . "/HTML-components/footer.php"; ?>
 
 </body>
 </html>

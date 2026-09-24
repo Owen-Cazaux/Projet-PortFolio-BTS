@@ -4,6 +4,3 @@
       <span><a href="#">LinkedIn</a> · <a href="#">GitHub</a></span>
     </div>
   </footer>
-
-</body>
-</html>

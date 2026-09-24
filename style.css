@@ -53,6 +53,11 @@ select {
   outline-offset: 3px;
   border-radius: 2px;
 }
+
+.prenom {
+    color: var(--pink-deep);
+    text-decoration : none;
+}
  
 .wrap {
   width: min(100% - 2 * var(--gap), var(--page));
