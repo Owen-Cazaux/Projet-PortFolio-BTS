@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-include("header.php")
+require __DIR__ . "/HTML-components/header.php";
 
 ?>
 
@@ -15,8 +15,8 @@ include("header.php")
             Étudiant en BTS SIO SLAM. Je conçois et je réalise des sites & applications web, et je présente ici mes projets.
           </p>
           <div class="actions">
-            <a class="btn btn-primary" href="MesProjets.html">Voir mes projets</a>
-            <a class="btn btn-secondary" href="Contact.php">Me contacter</a>
+            <a class="btn btn-primary" href="Pages/MesProjets.php">Voir mes projets</a>
+            <a class="btn btn-secondary" href="Pages/Contact.php">Me contacter</a>
           </div>
         </div>
 

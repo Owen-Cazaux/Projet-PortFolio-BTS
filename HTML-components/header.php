@@ -1,3 +1,9 @@
+<?php
+$basePath = str_contains($_SERVER['PHP_SELF'] ?? '', '/Pages/') ? '..' : '.';
+$contactPage = str_contains($_SERVER['PHP_SELF'] ?? '', '/Pages/') ? 'Contact.php' : 'Pages/Contact.php';
+$projectsPage = str_contains($_SERVER['PHP_SELF'] ?? '', '/Pages/') ? 'MesProjets.php' : 'Pages/MesProjets.php';
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="<?= $basePath ?>/style.css">
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const links = document.querySelectorAll('.nav a');
@@ -41,13 +47,13 @@
 
   <header class="site-header">
     <div class="wrap">
-      <a class="logo" href="#accueil">Owen Cazaux</a>
+      <a class="logo" href="<?= $basePath ?>/index.php#accueil">Owen Cazaux</a>
       <nav class="nav" aria-label="Navigation principale">
         <ul>
-          <li><a href="#accueil" aria-current="page">Accueil</a></li>
-          <li><a href="#projets">Projets</a></li>
-          <li><a href="#competences">Compétences</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="<?= $basePath ?>/index.php#accueil" aria-current="page">Accueil</a></li>
+          <li><a href="<?= $basePath ?>/index.php#projets">Projets</a></li>
+          <li><a href="<?= $basePath ?>/index.php#competences">Compétences</a></li>
+          <li><a href="<?= $contactPage ?>">Contact</a></li>
         </ul>
       </nav>
     </div>

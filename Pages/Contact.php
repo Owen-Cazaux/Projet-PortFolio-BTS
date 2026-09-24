@@ -1,4 +1,4 @@
-<?php include("header.php"); ?>
+<?php require __DIR__ . "/../HTML-components/header.php"; ?>
 
 <main>
   <section class="hero">
@@ -10,7 +10,7 @@
         </p>
         <div class="actions">
           <a class="btn btn-primary" href="mailto:owen.cazaux2@gmail.com">Me contacter</a>
-          <a class="btn btn-secondary" href="index.php">Retour à l'accueil</a>
+          <a class="btn btn-secondary" href="../index.php">Retour à l'accueil</a>
         </div>
       </div>
 
@@ -54,4 +54,4 @@
   </section>
 </main>
 
-<?php include("footer.php"); ?>
+<?php require __DIR__ . "/../HTML-components/footer.php"; ?>
