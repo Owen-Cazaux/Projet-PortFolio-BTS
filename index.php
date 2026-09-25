@@ -7,7 +7,7 @@ include __DIR__ . "/HTML-components/header.php";
     <section class="hero" id="accueil">
       <div class="wrap">
         <div>
-          <h1 class="prenom">Owen<br>Cazaux</h1>
+          <h1>Owen<br>Cazaux</h1>
           <p class="lead">
             Étudiant en BTS SIO SLAM. Je conçois et je réalise des sites & applications web, et je présente ici mes projets.
           </p>
@@ -83,9 +83,9 @@ include __DIR__ . "/HTML-components/header.php";
           <div>
             <h3>Développement</h3>
             <ul>
-              <li>HTML / CSS</li>
+              <li>Tailwind-css</li>
               <li>JavaScript</li>
-              <li>PHP</li>
+              <li>PHP Symphony</li>
             </ul>
           </div>
           <div>
@@ -93,7 +93,7 @@ include __DIR__ . "/HTML-components/header.php";
             <ul>
               <li>SQL / MySQL</li>
               <li>Git et GitHub</li>
-              <li>[Autre outil]</li>
+              <li></li>
             </ul>
           </div>
           <div>
@@ -101,9 +101,21 @@ include __DIR__ . "/HTML-components/header.php";
             <ul>
               <li>Travail en équipe</li>
               <li>Gestion de projet</li>
-              <li>Anglais technique</li>
+              <li>UI/UX via Figma</li>
             </ul>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Contact</h2>
+        </div>
+        <div class="contact-box">
+          <a class="contact-mail" href="mailto:owen.cazaux2@gmail.com">owen.cazaux2@gmail.com</a>
+          <p>Disponible pour un stage ou une alternance</p>
         </div>
       </div>
     </section>

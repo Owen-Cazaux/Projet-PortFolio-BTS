@@ -41,9 +41,9 @@
 				</article>
 				<article class="project-card">
 					<span class="year">2026</span>
-					<h3>Application de gestion</h3>
-					<p>Une interface de gestion simple pour organiser des tâches, clients ou contenus.</p>
-					<div class="tags"><span>PHP</span><span>SQL</span><span>UI</span></div>
+					<h3>Bot discord </h3>
+					<p>Création de commandes dans le but de facilité l'assignation de rôles discord à de grand nombre d'utilisateur.</p>
+					<div class="tags"><span>Python</span><span>Discord.py</span></div>
 				</article>
 				<article class="project-card">
 					<span class="year">2025</span>

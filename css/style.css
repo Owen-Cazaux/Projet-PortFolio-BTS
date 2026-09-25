@@ -5,6 +5,8 @@
  
 :root {
   --paper: #ffffff;        /* fond de page (blanc) */
+  --surface: #ffffff;      /* cartes et éléments en relief */
+  --surface-soft: #fff8fb; /* surfaces légèrement teintées */
   --sky: #dff0ff;          /* bleu clair : fond de la fiche et des sections */
   --sky-deep: #a9d4f5;     /* bleu clair plus soutenu */
   --pink: #ff9cc2;         /* rose : boutons et surlignage */
@@ -13,6 +15,8 @@
   --ink: #1d2b4a;          /* texte principal (bleu nuit) */
   --muted: #5a6784;        /* texte secondaire */
   --line: #d3e2f2;         /* filets */
+  --header-bg: rgba(255, 255, 255, 0.93);
+  --on-ink: #ffffff;
   --accent: var(--pink-deep);
  
   --font-title: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
@@ -20,6 +24,24 @@
  
   --page: 1080px;
   --gap: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* Active ce thème avec : <html data-theme="dark"> */
+:root[data-theme="dark"] {
+  --paper: #121a1f;
+  --surface: #18242a;
+  --surface-soft: #203036;
+  --sky: #1d3336;
+  --sky-deep: #355457;
+  --pink: #d89a7a;
+  --pink-soft: #302a29;
+  --pink-deep: #e8b39a;
+  --ink: #e9eeeb;
+  --muted: #aebdbb;
+  --line: #314247;
+  --header-bg: rgba(18, 26, 31, 0.94);
+  --on-ink: #121a1f;
+  --accent: var(--pink-deep);
 }
  
 *, *::before, *::after { box-sizing: border-box; }
@@ -54,9 +76,39 @@ select {
   border-radius: 2px;
 }
 
+.interrupteur {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.6rem;
+}
+
 .prenom {
-    color: var(--pink-deep);
-    text-decoration : none;
+  position: relative;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.prenom::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(1);
+  transform-origin: center;
+  transition: transform 0.4s ease;
+}
+
+
+.prenom:hover::after {
+  transform: scaleX(0);
 }
  
 .wrap {
@@ -70,7 +122,7 @@ select {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.93);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
   padding-block: 1.25rem;
   border-bottom: 1px solid var(--line);
@@ -111,7 +163,7 @@ select {
  
 .hero {
   padding-block: clamp(3rem, 9vw, 7rem);
-  background: linear-gradient(180deg, #fff 0%, var(--pink-soft) 100%);
+  background: linear-gradient(180deg, var(--paper) 0%, var(--pink-soft) 100%);
 }
  
 .hero .wrap {
@@ -155,10 +207,10 @@ select {
   border-color: var(--pink);
   color: var(--ink);
 }
-.btn-primary:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+.btn-primary:hover { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
  
-.btn-secondary { background: #fff; }
-.btn-secondary:hover { background: var(--ink); color: #fff; }
+.btn-secondary { background: var(--surface); }
+.btn-secondary:hover { background: var(--ink); color: var(--on-ink); }
  
 /* Fiche d'identité : les infos utiles pour le jury */
 .fiche {
@@ -196,7 +248,7 @@ select {
 .section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 #competences { background: var(--sky); }
 #contact { background: var(--pink-soft); }
-.projects-hero { background: linear-gradient(180deg, #fff 0%, var(--sky) 100%); }
+.projects-hero { background: linear-gradient(180deg, var(--paper) 0%, var(--sky) 100%); }
  
 .section-head {
   display: flex;
@@ -275,7 +327,7 @@ select {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  background: #fff;
+  background: var(--surface);
   border: 2px solid var(--ink);
   border-radius: 22px;
   padding: 1.5rem;
@@ -326,7 +378,7 @@ select {
 /* Pied de page */
 .site-footer {
   padding-block: 2rem;
-  background: #fff;
+  background: var(--surface);
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.95rem;
