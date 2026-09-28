@@ -18,6 +18,13 @@
   --header-bg: rgba(255, 255, 255, 0.93);
   --on-ink: #ffffff;
   --accent: var(--pink-deep);
+  --trail-color: var(--pink);
+  --trail-outline-color: transparent;
+  --trail-on-paper: var(--pink);
+  --trail-on-sky: var(--surface);
+  --trail-on-rose: var(--ink);
+  --trail-outline-on-sky: var(--ink);
+  --trail-outline-on-rose: var(--pink-deep);
  
   --font-title: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
@@ -42,6 +49,12 @@
   --header-bg: rgba(18, 26, 31, 0.94);
   --on-ink: #121a1f;
   --accent: var(--pink-deep);
+  --trail-on-sky: var(--ink);
+  --trail-on-rose: var(--sky-deep);
+  --trail-outline-on-sky: var(--sky-deep);
+  --trail-outline-on-rose: var(--ink);
+  cursor: url("../images/brush-dark.png") 8 39, auto;
+  cursor: image-set(url("../images/brush-dark.png") 1x, url("../images/brush-dark@2x.png") 2x) 8 39, auto;
 }
 
 html.theme-transition,
@@ -64,7 +77,11 @@ html.theme-transition *::after {
  
 *, *::before, *::after { box-sizing: border-box; }
  
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  cursor: url("../images/brush-light.png") 8 39, auto;
+  cursor: image-set(url("../images/brush-light.png") 1x, url("../images/brush-light@2x.png") 2x) 8 39, auto;
+}
  
 body {
   margin: 0;
@@ -74,18 +91,32 @@ body {
   font-size: 1.0625rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='5.5' fill='none' stroke='%23ff9cc2' stroke-width='1.5'/%3E%3Ccircle cx='9' cy='9' r='1.8' fill='%23ff9cc2'/%3E%3C/svg%3E") 9 9, auto;
 }
  
 a { color: inherit; }
 img { max-width: 100%; display: block; }
 
-button,
 a,
-input,
-textarea,
+button,
+[role="button"],
+summary,
+label,
 select {
-  cursor: pointer;
+  cursor: inherit;
+}
+
+input,
+textarea {
+  cursor: text;
+}
+
+.brush-trail {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
 }
  
 :focus-visible {
@@ -136,6 +167,14 @@ select {
   line-height: 1;
   white-space: nowrap;
   pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+html.has-scrolled .theme-hint {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
 }
 
 .theme-hint > span:first-child {
@@ -230,6 +269,10 @@ select {
 /* ---------- Accueil (hero) ---------- */
  
 .hero {
+  --trail-start-color: var(--trail-on-paper);
+  --trail-end-color: var(--trail-on-rose);
+  --trail-start-outline-color: transparent;
+  --trail-end-outline-color: var(--trail-outline-on-rose);
   padding-block: clamp(3rem, 9vw, 7rem);
   background: linear-gradient(180deg, var(--paper) 0%, var(--pink-soft) 100%);
 }
@@ -271,6 +314,8 @@ select {
 }
  
 .btn-primary {
+  --trail-color: var(--trail-on-rose);
+  --trail-outline-color: var(--trail-outline-on-rose);
   background: var(--pink);
   border-color: var(--pink);
   color: var(--ink);
@@ -282,6 +327,8 @@ select {
  
 /* Fiche d'identité : les infos utiles pour le jury */
 .fiche {
+  --trail-color: var(--trail-on-sky);
+  --trail-outline-color: var(--trail-outline-on-sky);
   background: var(--sky);
   color: var(--ink);
   padding: 1.75rem;
@@ -314,9 +361,23 @@ select {
 /* ---------- Sections ---------- */
  
 .section { padding-block: clamp(3rem, 7vw, 5.5rem); }
-#competences { background: var(--sky); }
-#contact { background: var(--pink-soft); }
-.projects-hero { background: linear-gradient(180deg, var(--paper) 0%, var(--sky) 100%); }
+#competences {
+  --trail-color: var(--trail-on-sky);
+  --trail-outline-color: var(--trail-outline-on-sky);
+  background: var(--sky);
+}
+#contact {
+  --trail-color: var(--trail-on-rose);
+  --trail-outline-color: var(--trail-outline-on-rose);
+  background: var(--pink-soft);
+}
+.projects-hero {
+  --trail-start-color: var(--trail-on-paper);
+  --trail-end-color: var(--trail-on-sky);
+  --trail-start-outline-color: transparent;
+  --trail-end-outline-color: var(--trail-outline-on-sky);
+  background: linear-gradient(180deg, var(--paper) 0%, var(--sky) 100%);
+}
  
 .section-head {
   display: flex;
@@ -361,7 +422,11 @@ select {
 .project .tags { color: var(--muted); font-size: 0.95rem; }
  
 .project a:hover h3 { color: var(--accent); }
-.project a:hover { background: var(--pink-soft); }
+.project a:hover {
+  --trail-color: var(--trail-on-rose);
+  --trail-outline-color: var(--trail-outline-on-rose);
+  background: var(--pink-soft);
+}
  
 /* Compétences */
 .skills {
@@ -434,6 +499,8 @@ select {
 }
 
 .project-card .tags span {
+  --trail-color: var(--trail-on-rose);
+  --trail-outline-color: var(--trail-outline-on-rose);
   background: var(--pink-soft);
   color: var(--ink);
   border: 1px solid var(--pink);
