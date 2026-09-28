@@ -1,3 +1,36 @@
+const themeToggle = document.querySelector('.theme-toggle');
+
+if (themeToggle) {
+	const savedTheme = localStorage.getItem('portfolio-theme');
+	const initialTheme = savedTheme === 'light' || savedTheme === 'dark'
+		? savedTheme
+		: document.documentElement.dataset.theme || 'dark';
+	let themeTransitionTimeout;
+
+	const applyTheme = (theme, animate = false) => {
+		const isDark = theme === 'dark';
+		window.clearTimeout(themeTransitionTimeout);
+		if (animate) {
+			document.documentElement.classList.add('theme-transition');
+			themeTransitionTimeout = window.setTimeout(() => {
+				document.documentElement.classList.remove('theme-transition');
+			}, 350);
+		}
+		document.documentElement.dataset.theme = theme;
+		themeToggle.setAttribute('aria-checked', String(isDark));
+		themeToggle.querySelector('img').src = isDark
+			? themeToggle.dataset.lampOff
+			: themeToggle.dataset.lampOn;
+	};
+
+	applyTheme(initialTheme);
+	themeToggle.addEventListener('click', () => {
+		const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+		applyTheme(nextTheme, true);
+		localStorage.setItem('portfolio-theme', nextTheme);
+	});
+}
+
 const sectionLinks = document.querySelectorAll('.nav a[data-section]');
 const sections = [...sectionLinks]
 	.map((link) => document.getElementById(link.dataset.section))

@@ -15,7 +15,7 @@ $isHomePage = !$isPagesDirectory && $currentPage === 'index.php';
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<?= $basePath ?>/css/style.css">
   <script src="<?= $basePath ?>/js/script.js" defer></script>
 </head>
@@ -33,8 +33,17 @@ $isHomePage = !$isPagesDirectory && $currentPage === 'index.php';
         </ul>
       </nav>
     </div>
-    <div class="interrupteur">
-
-    </div>
+    <span class="theme-hint" aria-hidden="true">
+      <span>Clique ici</span>
+      <svg class="theme-hint-arrow" viewBox="0 0 70 20" focusable="false">
+        <path d="M 2 13 C 18 13, 27 9, 43 10 S 57 11, 68 10" />
+        <path d="M 59 5 L 68 10 L 59 15" />
+      </svg>
+    </span>
+    <button class="theme-toggle" type="button" role="switch" aria-label="Thème sombre" aria-checked="true" title="Basculer entre thème clair et sombre"
+      data-lamp-off="<?= $basePath ?>/images/lamp-toggle-off.png"
+      data-lamp-on="<?= $basePath ?>/images/lamp-toggle-on.png">
+      <img src="<?= $basePath ?>/images/lamp-toggle-on.png" alt="lampe switch">
+    </button>
   </header>
 
