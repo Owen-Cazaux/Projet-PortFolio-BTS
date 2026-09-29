@@ -69,5 +69,17 @@ $isHomePage = !$isPagesDirectory && $currentPage === 'index.php';
       <button type="button" aria-label="Pinceau bleu pâle" title="Bleu pâle" data-paint="bleu-pale" data-color-light="#E8F4FF" data-color-dark="#457A81" style="--swatch-x: 70.1%; --swatch-y: 17.9%;"></button>
       <button type="button" aria-label="Pinceau bleu ardoise" title="Bleu ardoise" data-paint="bleu-ardoise" data-color-light="#DEE9F6" data-color-dark="#597880" style="--swatch-x: 75.2%; --swatch-y: 67.1%;"></button>
     </aside>
+    <div class="paint-tool-actions" aria-label="Commandes du dessin">
+      <button class="paint-select-mode" type="button" aria-label="Mode sélection" title="Revenir au mode sélection" aria-pressed="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 3.5v16l4.6-4.2 3.1 5.2 2.3-1.4-3.1-5.2 6.1-.3L5 3.5Z" />
+        </svg>
+      </button>
+      <button class="paint-clear" type="button" aria-label="Effacer les dessins" title="Effacer les dessins">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 3v7m4-7v7" />
+        </svg>
+      </button>
+    </div>
   </div>
 

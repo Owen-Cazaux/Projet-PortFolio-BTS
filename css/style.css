@@ -137,6 +137,11 @@ textarea {
   cursor: image-set(url("../assets/images/brush-dark.png") 1x, url("../assets/images/brush-dark@2x.png") 2x) 8 39, auto !important;
 }
 
+:root.drawing-mode .paint-tools,
+:root.drawing-mode .paint-tools * {
+  cursor: pointer !important;
+}
+
 .paint-tools {
   position: fixed;
   z-index: 10000;
@@ -144,7 +149,7 @@ textarea {
   bottom: calc(1.25rem + env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .paint-palette {
@@ -178,6 +183,12 @@ textarea {
   outline: 2px solid var(--on-ink);
   outline-offset: 1px;
   box-shadow: 0 0 0 2px var(--ink);
+}
+
+.paint-tool-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .paint-select-mode,
