@@ -63,9 +63,9 @@ $isHomePage = !$isPagesDirectory && $currentPage === 'index.php';
       <button type="button" aria-label="Pinceau rose vif" title="Rose vif" data-paint="rose-vif" data-color-light="#DC578F" data-color-dark="#EEC7B3" style="--swatch-x: 36.1%; --swatch-y: 17.8%;"></button>
       <button type="button" aria-label="Pinceau rose clair" title="Rose clair" data-paint="rose-clair" data-color-light="#FFB4D1" data-color-dark="#E2B29B" style="--swatch-x: 20%; --swatch-y: 28.7%;"></button>
       <button type="button" aria-label="Pinceau bleu" title="Bleu" data-paint="bleu" data-color-light="#3B5797" data-color-dark="#EFF3F0" style="--swatch-x: 14.2%; --swatch-y: 50.3%;"></button>
-      <button type="button" aria-label="Pinceau rose poudré" title="Rose poudré" data-paint="rose-poudre" data-color-light="#FFA0C5" data-color-dark="#D09477" style="--swatch-x: 48.2%; --swatch-y: 48.4%;"></button>
+      <button type="button" aria-label="Pinceau rose poudré" title="Rose poudré" data-paint="rose-poudre" data-color-light="#FFA0C5" data-color-dark="#D09477" style="--swatch-x: 23%; --swatch-y: 32%;"></button>
       <button type="button" aria-label="Pinceau bleu clair" title="Bleu clair" data-paint="bleu-clair" data-color-light="#BEDFF8" data-color-dark="#5B898E" style="--swatch-x: 84.2%; --swatch-y: 34.1%;"></button>
-      <button type="button" aria-label="Pinceau bleu glacier" title="Bleu glacier" data-paint="bleu-glacier" data-color-light="#B1CFF0" data-color-dark="#435A5A" style="--swatch-x: 53.6%; --swatch-y: 47.7%;"></button>
+      <button type="button" aria-label="Pinceau bleu glacier" title="Bleu glacier" data-paint="bleu-glacier" data-color-light="#B1CFF0" data-color-dark="#435A5A" style="--swatch-x: 87%; --swatch-y: 39%;"></button>
       <button type="button" aria-label="Pinceau bleu pâle" title="Bleu pâle" data-paint="bleu-pale" data-color-light="#E8F4FF" data-color-dark="#457A81" style="--swatch-x: 70.1%; --swatch-y: 17.9%;"></button>
       <button type="button" aria-label="Pinceau bleu ardoise" title="Bleu ardoise" data-paint="bleu-ardoise" data-color-light="#DEE9F6" data-color-dark="#597880" style="--swatch-x: 75.2%; --swatch-y: 67.1%;"></button>
     </aside>
