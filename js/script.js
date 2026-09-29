@@ -397,3 +397,98 @@ if (sectionLinks.length && sections.length) {
 	updateActiveSection();
 }
 
+const canUsePointerEffects = matchMedia('(hover: hover) and (pointer: fine)').matches
+	&& !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (canUsePointerEffects) {
+	document.querySelectorAll('.btn').forEach((button) => {
+		button.addEventListener('pointermove', (event) => {
+			const bounds = button.getBoundingClientRect();
+			const offsetX = (event.clientX - bounds.left - bounds.width / 2) * 0.12;
+			const offsetY = (event.clientY - bounds.top - bounds.height / 2) * 0.12;
+			button.style.translate = `${offsetX}px ${offsetY}px`;
+		});
+
+		button.addEventListener('pointerleave', () => {
+			button.style.translate = '';
+		});
+	});
+
+	document.querySelectorAll('.projects-grid .project-card').forEach((card) => {
+		card.addEventListener('pointermove', (event) => {
+			const bounds = card.getBoundingClientRect();
+			const horizontalProgress = (event.clientX - bounds.left) / bounds.width - 0.5;
+			const verticalProgress = (event.clientY - bounds.top) / bounds.height - 0.5;
+			card.style.setProperty('--tilt-x', `${horizontalProgress * 10}deg`);
+			card.style.setProperty('--tilt-y', `${verticalProgress * -10}deg`);
+		});
+
+		card.addEventListener('pointerleave', () => {
+			card.style.removeProperty('--tilt-x');
+			card.style.removeProperty('--tilt-y');
+		});
+	});
+}
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+	const decodingGlyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*/';
+	const titleHeadings = document.querySelectorAll('main h1');
+
+	titleHeadings.forEach((heading) => {
+		const accessibleTitle = heading.innerText.replace(/\s+/g, ' ').trim();
+		const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+		const textNodes = [];
+		while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+		const letters = [];
+		textNodes.forEach((textNode) => {
+			const fragment = document.createDocumentFragment();
+			Array.from(textNode.textContent).forEach((character) => {
+				if (/\s/u.test(character)) {
+					fragment.append(document.createTextNode(character));
+					return;
+				}
+
+				const letter = document.createElement('span');
+				letter.className = 'title-char';
+				letter.setAttribute('aria-hidden', 'true');
+				letter.textContent = character;
+				fragment.append(letter);
+				letters.push({ element: letter, character, lastStep: -1 });
+			});
+			textNode.replaceWith(fragment);
+		});
+
+		if (!letters.length) return;
+
+		heading.setAttribute('aria-label', accessibleTitle);
+		const animationStart = performance.now();
+		const animateTitle = (time) => {
+			let remaining = false;
+			letters.forEach((letter, index) => {
+				const elapsed = time - animationStart - index * 18;
+				if (elapsed < 0) {
+					remaining = true;
+					return;
+				}
+
+				letter.element.classList.add('is-visible');
+				const step = Math.floor(elapsed / 42);
+				if (step < 8) {
+					remaining = true;
+					if (step !== letter.lastStep) {
+						letter.lastStep = step;
+						letter.element.textContent = decodingGlyphs[Math.floor(Math.random() * decodingGlyphs.length)];
+					}
+				} else {
+					letter.element.textContent = letter.character;
+				}
+			});
+
+			if (remaining) requestAnimationFrame(animateTitle);
+		};
+
+		requestAnimationFrame(animateTitle);
+	});
+}
+

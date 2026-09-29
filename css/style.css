@@ -185,12 +185,6 @@ textarea {
   box-shadow: 0 0 0 2px var(--ink);
 }
 
-.paint-tool-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
 .paint-select-mode,
 .paint-clear {
   display: grid;
@@ -402,7 +396,7 @@ html.has-scrolled .theme-hint {
   gap: var(--gap);
   align-items: end;
 }
- 
+
 .hero h1 {
   font-family: var(--font-title);
   font-weight: 800;
@@ -429,7 +423,7 @@ html.has-scrolled .theme-hint {
   border: 2px solid var(--ink);
   font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s, translate 180ms ease-out;
 }
  
 .btn-primary {
@@ -468,9 +462,21 @@ html.has-scrolled .theme-hint {
 .fiche dt { font-size: 0.9rem; color: var(--muted); }
 .fiche dd { margin: 0; font-weight: 500; }
  
-/* Seule animation de la page : l'arrivée du titre */
+/* Arrivée et décodage des grands titres */
 @media (prefers-reduced-motion: no-preference) {
   .hero h1 { animation: arrivee 0.7s cubic-bezier(.2,.7,.2,1) both; }
+  .title-char {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(0.3em);
+    transition: opacity 240ms ease, filter 320ms ease, transform 320ms ease;
+  }
+  .title-char.is-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
   @keyframes arrivee {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: none; }
@@ -576,6 +582,9 @@ html.has-scrolled .theme-hint {
 }
 
 .project-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --card-lift: 0px;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
@@ -586,7 +595,9 @@ html.has-scrolled .theme-hint {
   border-radius: 22px;
   padding: 1.5rem;
   box-shadow: 8px 8px 0 var(--pink);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform: perspective(900px) rotateX(var(--tilt-y)) rotateY(var(--tilt-x)) translateY(var(--card-lift));
+  transform-style: preserve-3d;
+  transition: transform 180ms ease-out, box-shadow 0.2s ease;
 }
 
 .project-card:focus-visible {
@@ -594,7 +605,7 @@ html.has-scrolled .theme-hint {
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
+  --card-lift: -4px;
   box-shadow: 12px 12px 0 var(--pink);
 }
 
