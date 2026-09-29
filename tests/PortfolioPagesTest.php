@@ -13,6 +13,9 @@ final class PortfolioPagesTest extends TestCase
             'home' => ['index.php', 'Owen'],
             'projects' => ['Pages/MesProjets.php', 'Mes projets'],
             'contact' => ['Pages/Contact.php', 'Parlons de votre projet'],
+            'personal portfolio' => ['Pages/portfolio-personnel.php', 'Portfolio personnel'],
+            'Discord bot' => ['Pages/bot-discord.php', 'Bot Discord'],
+            'UI/UX redesign' => ['Pages/refonte-ui-ux.php', 'Refonte UI/UX'],
         ];
     }
 
@@ -28,6 +31,13 @@ final class PortfolioPagesTest extends TestCase
         self::assertStringContainsString($basePath . '/assets/images/lamp-toggle-on.png', $html);
         self::assertStringContainsString($basePath . '/assets/images/palette-dark.png', $html);
         self::assertStringContainsString('class="site-footer"', $html);
+
+        if (str_contains($route, 'portfolio-personnel.php') || str_contains($route, 'bot-discord.php') || str_contains($route, 'refonte-ui-ux.php')) {
+            self::assertStringContainsString('class="project-gallery"', $html);
+            self::assertSame(2, substr_count($html, 'class="project-shot__placeholder"'));
+            self::assertStringContainsString('class="project-shot__image"', $html);
+            self::assertStringContainsString('Ce que j’ai fait', $html);
+        }
 
         foreach ([
             'brush-dark.png',
@@ -73,6 +83,51 @@ final class PortfolioPagesTest extends TestCase
 
         self::assertLessThan(30, $sidePositions['rose-poudre']);
         self::assertGreaterThan(80, $sidePositions['bleu-glacier']);
+    }
+
+    public function testProjectCardsLinkToDedicatedPagesFromBothLists(): void
+    {
+        $home = $this->renderPage('index.php');
+        $projects = $this->renderPage('Pages/MesProjets.php');
+
+        $projectRoutes = [
+            'portfolio-personnel.php' => [
+                '2026',
+                'Portfolio personnel',
+                'Une vitrine web personnelle pour présenter mon profil, mes compétences et mes projets.',
+                'HTML',
+                'CSS',
+                'JS',
+                'PHP',
+            ],
+            'bot-discord.php' => [
+                '2026',
+                'Bot discord',
+                "Création de commandes dans le but de facilité l'assignation de rôles discord à de grand nombre d'utilisateur.",
+                'Python',
+                'Discord.py',
+            ],
+            'refonte-ui-ux.php' => [
+                '2026',
+                'Refonte UI/UX',
+                "Dashboard unique et d'un projet interne d'entreprise",
+                'Symfony',
+                'Vue',
+                'Tailwind/CSS',
+                'Twig',
+            ],
+        ];
+
+        foreach ($projectRoutes as $route => $projectInfo) {
+            self::assertStringContainsString('href="Pages/' . $route . '"', $home);
+            self::assertStringContainsString('href="' . $route . '"', $projects);
+            self::assertFileExists(self::PROJECT_ROOT . '/Pages/' . $route);
+
+            foreach ($projectInfo as $info) {
+                self::assertStringContainsString($info, $home);
+                self::assertStringContainsString($info, $projects);
+            }
+        }
     }
 
     private function renderPage(string $route): string
