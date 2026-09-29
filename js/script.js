@@ -1,5 +1,142 @@
 const themeToggle = document.querySelector('.theme-toggle');
 const themeHint = document.querySelector('.theme-hint');
+const paintPalette = document.querySelector('.paint-palette');
+const paintPaletteImage = paintPalette?.querySelector('img');
+const paintButtons = paintPalette?.querySelectorAll('button[data-paint]') ?? [];
+const paintSelectMode = document.querySelector('.paint-select-mode');
+const paintClearButton = document.querySelector('.paint-clear');
+const getPaintColor = (button, theme = document.documentElement.dataset.theme) =>
+	button?.dataset[theme === 'dark' ? 'colorDark' : 'colorLight'] ?? '';
+
+if (paintPalette && paintPaletteImage) {
+	const savedPaint = localStorage.getItem('portfolio-paint')?.toLowerCase();
+	const validPaint = [...paintButtons].find((button) =>
+		[button.dataset.paint, button.dataset.colorLight.toLowerCase(), button.dataset.colorDark.toLowerCase()].includes(savedPaint)
+	);
+	const setDrawingMode = (enabled) => {
+		document.documentElement.classList.toggle('drawing-mode', enabled);
+		paintSelectMode?.setAttribute('aria-pressed', String(!enabled));
+		localStorage.setItem('portfolio-drawing-mode', String(enabled));
+	};
+
+	if (validPaint) {
+		validPaint.setAttribute('aria-pressed', 'true');
+		document.documentElement.style.setProperty('--selected-paint', getPaintColor(validPaint));
+		setDrawingMode(localStorage.getItem('portfolio-drawing-mode') === 'true');
+	} else {
+		paintSelectMode?.setAttribute('aria-pressed', 'true');
+	}
+
+	const selectPaint = (button) => {
+		document.documentElement.style.setProperty('--selected-paint', getPaintColor(button));
+		paintButtons.forEach((paintButton) => paintButton.setAttribute('aria-pressed', String(paintButton === button)));
+		localStorage.setItem('portfolio-paint', button.dataset.paint);
+		setDrawingMode(true);
+	};
+	paintPalette.addEventListener('click', (event) => {
+		let button = event.target.closest('button[data-paint]');
+		if (!button) return;
+
+		if (event.detail > 0) {
+			const hitButtons = [...paintButtons].filter((paintButton) => {
+				const bounds = paintButton.getBoundingClientRect();
+				return event.clientX >= bounds.left && event.clientX <= bounds.right
+					&& event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+			});
+			button = hitButtons.reduce((closestButton, paintButton) => {
+				const bounds = paintButton.getBoundingClientRect();
+				const closestBounds = closestButton.getBoundingClientRect();
+				const distance = Math.hypot(event.clientX - (bounds.left + bounds.width / 2), event.clientY - (bounds.top + bounds.height / 2));
+				const closestDistance = Math.hypot(event.clientX - (closestBounds.left + closestBounds.width / 2), event.clientY - (closestBounds.top + closestBounds.height / 2));
+				return distance < closestDistance ? paintButton : closestButton;
+			}, button);
+		}
+
+		selectPaint(button);
+	});
+
+	paintSelectMode?.addEventListener('click', () => setDrawingMode(false));
+}
+
+if (paintSelectMode) {
+	const drawingCanvas = document.createElement('canvas');
+	drawingCanvas.className = 'brush-drawing';
+	drawingCanvas.setAttribute('aria-hidden', 'true');
+	const drawingContext = drawingCanvas.getContext('2d');
+	let canvasWidth = 0;
+	let canvasHeight = 0;
+	let isDrawing = false;
+
+	if (drawingContext) {
+		document.body.appendChild(drawingCanvas);
+
+		const resizeDrawingCanvas = () => {
+			const pixelRatio = window.devicePixelRatio || 1;
+			const nextWidth = Math.max(document.documentElement.scrollWidth, window.innerWidth);
+			const nextHeight = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+			const previousCanvas = document.createElement('canvas');
+			previousCanvas.width = drawingCanvas.width;
+			previousCanvas.height = drawingCanvas.height;
+			previousCanvas.getContext('2d')?.drawImage(drawingCanvas, 0, 0);
+
+			drawingCanvas.width = nextWidth * pixelRatio;
+			drawingCanvas.height = nextHeight * pixelRatio;
+			drawingCanvas.style.width = `${nextWidth}px`;
+			drawingCanvas.style.height = `${nextHeight}px`;
+			drawingContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+			if (previousCanvas.width && previousCanvas.height) {
+				drawingContext.drawImage(previousCanvas, 0, 0, previousCanvas.width / pixelRatio, previousCanvas.height / pixelRatio);
+			}
+			canvasWidth = nextWidth;
+			canvasHeight = nextHeight;
+		};
+
+		resizeDrawingCanvas();
+		window.addEventListener('resize', resizeDrawingCanvas);
+		window.addEventListener('load', resizeDrawingCanvas, { once: true });
+		paintClearButton?.addEventListener('click', () => drawingContext.clearRect(0, 0, canvasWidth, canvasHeight));
+
+		const getCanvasPoint = (event) => ({ x: event.pageX, y: event.pageY });
+		const drawDot = (point, color) => {
+			drawingContext.beginPath();
+			drawingContext.arc(point.x, point.y, 2.5, 0, Math.PI * 2);
+			drawingContext.fillStyle = color;
+			drawingContext.fill();
+		};
+
+		document.addEventListener('pointerdown', (event) => {
+			if (!document.documentElement.classList.contains('drawing-mode') || event.target.closest('.paint-tools')) return;
+			event.preventDefault();
+			isDrawing = true;
+			const point = getCanvasPoint(event);
+			const color = getComputedStyle(document.documentElement).getPropertyValue('--selected-paint').trim();
+			drawDot(point, color);
+			drawingContext.beginPath();
+			drawingContext.moveTo(point.x, point.y);
+			drawingContext.strokeStyle = color;
+			drawingContext.lineWidth = 5;
+			drawingContext.lineCap = 'round';
+			drawingContext.lineJoin = 'round';
+		}, true);
+
+		document.addEventListener('pointermove', (event) => {
+			if (!isDrawing) return;
+			const point = getCanvasPoint(event);
+			drawingContext.lineTo(point.x, point.y);
+			drawingContext.stroke();
+		});
+
+		const stopDrawing = () => {
+			isDrawing = false;
+			drawingContext.closePath();
+		};
+		window.addEventListener('pointerup', stopDrawing);
+		window.addEventListener('pointercancel', stopDrawing);
+		document.addEventListener('dragstart', (event) => {
+			if (document.documentElement.classList.contains('drawing-mode')) event.preventDefault();
+		});
+	}
+}
 
 if (themeHint) {
 	const updateThemeHintVisibility = () => {
@@ -27,6 +164,13 @@ if (themeToggle) {
 			}, 350);
 		}
 		document.documentElement.dataset.theme = theme;
+		const selectedPaint = [...paintButtons].find((button) => button.getAttribute('aria-pressed') === 'true');
+		if (selectedPaint) {
+			document.documentElement.style.setProperty('--selected-paint', getPaintColor(selectedPaint, theme));
+		}
+		if (paintPaletteImage) {
+			paintPaletteImage.src = isDark ? paintPaletteImage.dataset.paletteDark : paintPaletteImage.dataset.paletteLight;
+		}
 		themeToggle.setAttribute('aria-checked', String(isDark));
 		themeToggle.querySelector('img').src = isDark
 			? themeToggle.dataset.lampOff
@@ -71,6 +215,14 @@ if (!matchMedia('(hover: none)').matches && !matchMedia('(prefers-reduced-motion
 		const getTrailStyle = (x, y) => {
 			const target = document.elementFromPoint(x, y);
 			const rootStyles = getComputedStyle(root);
+			const selectedPaint = rootStyles.getPropertyValue('--selected-paint').trim();
+			if (selectedPaint) {
+				return {
+					color: selectedPaint,
+					outline: rootStyles.getPropertyValue('--trail-outline-color').trim()
+				};
+			}
+
 			if (!target) {
 				return {
 					color: rootStyles.getPropertyValue('--trail-color').trim(),

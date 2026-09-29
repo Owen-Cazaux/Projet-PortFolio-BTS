@@ -53,8 +53,6 @@
   --trail-on-rose: var(--sky-deep);
   --trail-outline-on-sky: var(--sky-deep);
   --trail-outline-on-rose: var(--ink);
-  cursor: url("../images/brush-dark.png") 8 39, auto;
-  cursor: image-set(url("../images/brush-dark.png") 1x, url("../images/brush-dark@2x.png") 2x) 8 39, auto;
 }
 
 html.theme-transition,
@@ -79,8 +77,6 @@ html.theme-transition *::after {
  
 html {
   scroll-behavior: smooth;
-  cursor: url("../images/brush-light.png") 8 39, auto;
-  cursor: image-set(url("../images/brush-light.png") 1x, url("../images/brush-light@2x.png") 2x) 8 39, auto;
 }
  
 body {
@@ -102,7 +98,7 @@ button,
 summary,
 label,
 select {
-  cursor: inherit;
+  cursor: pointer;
 }
 
 input,
@@ -117,6 +113,118 @@ textarea {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
+}
+
+.brush-drawing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.drawing-mode,
+.drawing-mode * {
+  cursor: url("../assets/images/brush-light.png") 8 39, auto !important;
+  cursor: image-set(url("../assets/images/brush-light.png") 1x, url("../assets/images/brush-light@2x.png") 2x) 8 39, auto !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+:root[data-theme="dark"].drawing-mode,
+:root[data-theme="dark"].drawing-mode * {
+  cursor: url("../assets/images/brush-dark.png") 8 39, auto !important;
+  cursor: image-set(url("../assets/images/brush-dark.png") 1x, url("../assets/images/brush-dark@2x.png") 2x) 8 39, auto !important;
+}
+
+.paint-tools {
+  position: fixed;
+  z-index: 10000;
+  right: calc(1.25rem + env(safe-area-inset-right));
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.paint-palette {
+  position: relative;
+  width: clamp(168px, 21vw, 260px);
+  aspect-ratio: 1165 / 943;
+}
+
+.paint-palette img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.paint-palette button {
+  position: absolute;
+  left: var(--swatch-x);
+  top: var(--swatch-y);
+  width: 12%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  transform: translate(-50%, -50%);
+}
+
+.paint-palette button:hover,
+.paint-palette button[aria-pressed="true"] {
+  outline: 2px solid var(--on-ink);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.paint-select-mode,
+.paint-clear {
+  display: grid;
+  width: 2.75rem;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 18%);
+}
+
+.paint-select-mode svg,
+.paint-clear svg {
+  width: 100%;
+  height: 100%;
+}
+
+.paint-select-mode svg {
+  fill: currentColor;
+}
+
+.paint-clear svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.paint-select-mode[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.paint-select-mode:hover,
+.paint-clear:hover {
+  color: var(--accent);
+}
+
+@media (max-height: 520px) {
+  .paint-palette { width: 150px; }
 }
  
 :focus-visible {
