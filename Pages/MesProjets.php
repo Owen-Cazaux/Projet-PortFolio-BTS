@@ -33,30 +33,24 @@
 			</div>
 
 			<div class="projects-grid">
-				<article class="project-card">
+				<a class="project-card" href="portfolio-personnel.php">
 					<span class="year">2026</span>
 					<h3>Portfolio personnel</h3>
 					<p>Une vitrine web personnelle pour présenter mon profil, mes compétences et mes projets.</p>
-					<div class="tags"><span>HTML</span><span>CSS</span><span>PHP</span></div>
-				</article>
-				<article class="project-card">
+					<div class="tags"><span>HTML</span><span>CSS</span><span>JS</span><span>PHP</span></div>
+				</a>
+				<a class="project-card" href="bot-discord.php">
 					<span class="year">2026</span>
-					<h3>Bot discord </h3>
+					<h3>Bot discord</h3>
 					<p>Création de commandes dans le but de facilité l'assignation de rôles discord à de grand nombre d'utilisateur.</p>
 					<div class="tags"><span>Python</span><span>Discord.py</span></div>
-				</article>
-				<article class="project-card">
-					<span class="year">2025</span>
-					<h3>Site vitrine</h3>
-					<p>Un site marketing axé sur l'identité de marque, la lisibilité et la conversion.</p>
-					<div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
-				</article>
-				<article class="project-card">
-					<span class="year">2025</span>
-					<h3>Projet de données</h3>
-					<p>Un projet centré sur la collecte et la mise en forme d'informations.</p>
-					<div class="tags"><span>Tableau</span><span>Analyse</span><span>UX</span></div>
-				</article>
+				</a>
+				<a class="project-card" href="refonte-ui-ux.php">
+					<span class="year">2026</span>
+					<h3>Refonte UI/UX</h3>
+					<p>Dashboard unique et d'un projet interne d'entreprise</p>
+					<div class="tags"><span>Symfony</span><span>Vue</span><span>Tailwind/CSS</span><span>Twig</span></div>
+				</a>
 			</div>
 		</div>
 	</section>
