@@ -37,19 +37,19 @@
 					<span class="year">2026</span>
 					<h3>Portfolio personnel</h3>
 					<p>Une vitrine web personnelle pour présenter mon profil, mes compétences et mes projets.</p>
-					<div class="tags"><span>HTML</span><span>CSS</span><span>JS</span><span>PHP</span></div>
+					<div class="tags"><span class="tech-tag"><i class="devicon-html5-plain colored" aria-hidden="true"></i><span>HTML</span></span><span class="tech-tag"><i class="devicon-css3-plain colored" aria-hidden="true"></i><span>CSS</span></span><span class="tech-tag"><i class="devicon-javascript-plain colored" aria-hidden="true"></i><span>JS</span></span><span class="tech-tag"><i class="devicon-php-plain colored" aria-hidden="true"></i><span>PHP</span></span></div>
 				</a>
 				<a class="project-card" href="bot-discord.php">
 					<span class="year">2026</span>
 					<h3>Bot discord</h3>
 					<p>Création de commandes dans le but de facilité l'assignation de rôles discord à de grand nombre d'utilisateur.</p>
-					<div class="tags"><span>Python</span><span>Discord.py</span></div>
+					<div class="tags"><span class="tech-tag"><i class="devicon-python-plain colored" aria-hidden="true"></i><span>Python</span></span><span class="tech-tag"><i class="devicon-python-plain colored" aria-hidden="true"></i><span>Discord.py</span></span></div>
 				</a>
 				<a class="project-card" href="refonte-ui-ux.php">
 					<span class="year">2026</span>
 					<h3>Refonte UI/UX</h3>
 					<p>Dashboard unique et d'un projet interne d'entreprise</p>
-					<div class="tags"><span>Symfony</span><span>Vue</span><span>Tailwind/CSS</span><span>Twig</span></div>
+					<div class="tags"><span class="tech-tag"><i class="devicon-symfony-original colored" aria-hidden="true"></i><span>Symfony</span></span><span class="tech-tag"><i class="devicon-vuejs-plain colored" aria-hidden="true"></i><span>Vue</span></span><span class="tech-tag"><i class="devicon-tailwindcss-plain colored" aria-hidden="true"></i><span>Tailwind/CSS</span></span><span class="tech-tag"><img src="https://cdn.simpleicons.org/twig/8BC34A" alt="" aria-hidden="true"><span>Twig</span></span></div>
 				</a>
 			</div>
 		</div>
