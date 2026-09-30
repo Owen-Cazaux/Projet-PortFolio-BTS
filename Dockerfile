@@ -1,3 +1,11 @@
-FROM php:8.3-apache
-COPY . /var/www/html/
-EXPOSE 80
+FROM php:8.4-fpm-alpine
+WORKDIR /var/www/html
+RUN docker-php-ext-install pdo pdo_mysql
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY composer.* ./
+RUN composer install --no-dev --optimize-autoloader
+COPY . .
+RUN chown -R www-data:www-data storage bootstrap/cache
+USER www-data
+EXPOSE 9000
+CMD ["php-fpm"]
