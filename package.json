@@ -1,0 +1,28 @@
+{
+  "name": "projet-portfolio-bts",
+  "version": "1.0.0",
+  "description": "Réalisation du portfolio pour mon épreuve de BTS",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test:e2e": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Owen-Cazaux/Projet-PortFolio-BTS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Owen-Cazaux/Projet-PortFolio-BTS/issues"
+  },
+  "homepage": "https://github.com/Owen-Cazaux/Projet-PortFolio-BTS#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.3"
+  }
+}
