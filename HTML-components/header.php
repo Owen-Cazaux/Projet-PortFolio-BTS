@@ -16,6 +16,7 @@ $isHomePage = !$isPagesDirectory && $currentPage === 'index.php';
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Caveat:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
   <link rel="stylesheet" href="<?= $basePath ?>/css/style.css">
   <script src="<?= $basePath ?>/js/script.js" defer></script>
 </head>

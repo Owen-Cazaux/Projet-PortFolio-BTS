@@ -1,5 +1,71 @@
 const themeToggle = document.querySelector('.theme-toggle');
 const themeHint = document.querySelector('.theme-hint');
+const skillTabs = document.querySelector('[data-skill-tabs]');
+
+if (skillTabs) {
+	const tabs = [...skillTabs.querySelectorAll('[role="tab"]')];
+	const setSkillTileState = (tile, isFlipped) => {
+		tile.setAttribute('aria-expanded', String(isFlipped));
+		tile.setAttribute('aria-label', `${isFlipped ? 'Masquer' : 'Voir'} un exemple ${tile.dataset.skill}`);
+		tile.querySelector('.skill-tile-front')?.setAttribute('aria-hidden', String(isFlipped));
+		tile.querySelector('.skill-tile-back')?.setAttribute('aria-hidden', String(!isFlipped));
+	};
+	const setFlippingState = (event, isFlipping) => {
+		if (event.propertyName !== 'transform') return;
+		event.target.closest('.skill-tile-inner')?.closest('.skill-tile')?.classList.toggle('is-flipping', isFlipping);
+	};
+
+	skillTabs.addEventListener('transitionrun', (event) => setFlippingState(event, true));
+	skillTabs.addEventListener('transitionend', (event) => setFlippingState(event, false));
+	skillTabs.addEventListener('transitioncancel', (event) => setFlippingState(event, false));
+
+	const activateTab = (tab, moveFocus = false) => {
+		tabs.forEach((currentTab) => {
+			const isActive = currentTab === tab;
+			currentTab.setAttribute('aria-selected', String(isActive));
+			currentTab.tabIndex = isActive ? 0 : -1;
+			const panel = document.getElementById(currentTab.getAttribute('aria-controls'));
+			if (panel) {
+				if (!isActive) {
+					panel.querySelectorAll('.skill-tile[aria-expanded="true"]').forEach((tile) => setSkillTileState(tile, false));
+				}
+				panel.hidden = !isActive;
+			}
+		});
+		if (moveFocus) tab.focus();
+	};
+
+	skillTabs.addEventListener('click', (event) => {
+		const tile = event.target.closest('.skill-tile');
+		if (tile) {
+			const bounds = tile.getBoundingClientRect();
+			const clickedLeftHalf = event.detail > 0 && event.clientX < bounds.left + bounds.width / 2;
+			tile.classList.add('is-flipping');
+			tile.style.setProperty('--skill-flip-angle', clickedLeftHalf ? '-180deg' : '180deg');
+			setSkillTileState(tile, tile.getAttribute('aria-expanded') !== 'true');
+			return;
+		}
+
+		const tab = event.target.closest('[role="tab"]');
+		if (tab) activateTab(tab);
+	});
+
+	skillTabs.addEventListener('keydown', (event) => {
+		const currentIndex = tabs.indexOf(event.target.closest('[role="tab"]'));
+		if (currentIndex < 0) return;
+
+		let nextIndex;
+		if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+		else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+		else if (event.key === 'Home') nextIndex = 0;
+		else if (event.key === 'End') nextIndex = tabs.length - 1;
+		else return;
+
+		event.preventDefault();
+		activateTab(tabs[nextIndex], true);
+	});
+}
+
 const paintPalette = document.querySelector('.paint-palette');
 const paintPaletteImage = paintPalette?.querySelector('img');
 const paintButtons = paintPalette?.querySelectorAll('button[data-paint]') ?? [];
