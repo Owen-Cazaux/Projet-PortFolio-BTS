@@ -18,13 +18,18 @@
   --header-bg: rgba(255, 255, 255, 0.93);
   --on-ink: #ffffff;
   --accent: var(--pink-deep);
-  --trail-color: var(--pink);
+  --trail-color: var(--trail-on-paper);
   --trail-outline-color: transparent;
-  --trail-on-paper: var(--pink);
-  --trail-on-sky: var(--surface);
-  --trail-on-rose: var(--ink);
-  --trail-outline-on-sky: var(--ink);
+  --trail-on-paper: #2866c7;
+  --trail-on-sky: var(--pink-deep);
+  --trail-on-rose: #ffffff;
+  --trail-on-ink: #ffffff;
+  --trail-on-primary: var(--trail-on-rose);
+  --trail-outline-on-paper: transparent;
+  --trail-outline-on-sky: transparent;
   --trail-outline-on-rose: var(--pink-deep);
+  --trail-outline-on-ink: var(--pink-deep);
+  --trail-outline-on-primary: var(--trail-outline-on-rose);
  
   --font-title: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
@@ -49,10 +54,16 @@
   --header-bg: rgba(18, 26, 31, 0.94);
   --on-ink: #121a1f;
   --accent: var(--pink-deep);
-  --trail-on-sky: var(--ink);
-  --trail-on-rose: var(--sky-deep);
-  --trail-outline-on-sky: var(--sky-deep);
-  --trail-outline-on-rose: var(--ink);
+  --trail-on-paper: #79c4ff;
+  --trail-on-sky: var(--pink-deep);
+  --trail-on-rose: #f5f5ef;
+  --trail-on-ink: #2866c7;
+  --trail-on-primary: #173c46;
+  --trail-outline-on-paper: transparent;
+  --trail-outline-on-sky: transparent;
+  --trail-outline-on-rose: #121a1f;
+  --trail-outline-on-ink: transparent;
+  --trail-outline-on-primary: #f5f5ef;
 }
 
 html.theme-transition,
@@ -427,8 +438,8 @@ html.has-scrolled .theme-hint {
 }
  
 .btn-primary {
-  --trail-color: var(--trail-on-rose);
-  --trail-outline-color: var(--trail-outline-on-rose);
+  --trail-color: var(--trail-on-primary);
+  --trail-outline-color: var(--trail-outline-on-primary);
   background: var(--pink);
   border-color: var(--pink);
   color: var(--ink);
@@ -437,6 +448,12 @@ html.has-scrolled .theme-hint {
  
 .btn-secondary { background: var(--surface); }
 .btn-secondary:hover { background: var(--ink); color: var(--on-ink); }
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  --trail-color: var(--trail-on-ink);
+  --trail-outline-color: var(--trail-outline-on-ink);
+}
  
 /* Fiche d'identité : les infos utiles pour le jury */
 .fiche {
