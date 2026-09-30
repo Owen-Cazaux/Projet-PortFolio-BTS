@@ -55,7 +55,7 @@ include __DIR__ . "/HTML-components/header.php";
             <span class="year">2026</span>
             <h3>Refonte UI/UX</h3>
             <p>Dashboard unique et d'un projet interne d'entreprise</p>
-            <div class="tags"><span class="tech-tag"><i class="devicon-symfony-original colored" aria-hidden="true"></i><span>Symfony</span></span><span class="tech-tag"><i class="devicon-vuejs-plain colored" aria-hidden="true"></i><span>Vue</span></span><span class="tech-tag"><i class="devicon-tailwindcss-plain colored" aria-hidden="true"></i><span>Tailwind/CSS</span></span><span class="tech-tag"><img src="https://cdn.simpleicons.org/twig/8BC34A" alt="" aria-hidden="true"><span>Twig</span></span></div>
+            <div class="tags"><span class="tech-tag"><i class="devicon-symfony-original colored" aria-hidden="true"></i><span>Symfony</span></span><span class="tech-tag"><i class="devicon-vuejs-plain colored" aria-hidden="true"></i><span>Vue</span></span><span class="tech-tag"><i class="devicon-tailwindcss-plain colored" aria-hidden="true"></i><span>Tailwind/CSS</span></span><span class="tech-tag"><img src="assets/images/twig-1-3509747330.png" alt="" aria-hidden="true"><span>Twig</span></span></div>
           </a>
         </div>
       </div>

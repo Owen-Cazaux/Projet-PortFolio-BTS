@@ -880,8 +880,8 @@ html.has-scrolled .theme-hint {
 }
 
 .project-card .tech-tag img {
-  width: 1rem;
-  height: 1rem;
+  width: 1.15rem;
+  height: 1.15rem;
   object-fit: contain;
 }
 
