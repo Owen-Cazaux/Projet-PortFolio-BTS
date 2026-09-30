@@ -1,6 +1,25 @@
 const themeToggle = document.querySelector('.theme-toggle');
 const themeHint = document.querySelector('.theme-hint');
 const skillTabs = document.querySelector('[data-skill-tabs]');
+const contactForm = document.querySelector('[data-contact-form]');
+
+if (contactForm) {
+	contactForm.addEventListener('submit', (event) => {
+		event.preventDefault();
+		if (!contactForm.reportValidity()) return;
+
+		const formData = new FormData(contactForm);
+		const senderName = String(formData.get('name')).trim();
+		const senderEmail = String(formData.get('email')).trim();
+		const subject = String(formData.get('subject')).trim();
+		const message = String(formData.get('message')).trim();
+		const body = `Nom : ${senderName}\nE-mail : ${senderEmail}\nSujet : ${subject}\n\n${message}`;
+		const mailto = `mailto:owen.cazaux2@gmail.com?subject=${encodeURIComponent(`Portfolio - ${subject}`)}&body=${encodeURIComponent(body)}`;
+
+		contactForm.querySelector('[data-contact-status]').textContent = 'Votre application e-mail va s’ouvrir avec le message prérempli.';
+		window.location.href = mailto;
+	});
+}
 
 if (skillTabs) {
 	const tabs = [...skillTabs.querySelectorAll('[role="tab"]')];
@@ -64,6 +83,163 @@ if (skillTabs) {
 		event.preventDefault();
 		activateTab(tabs[nextIndex], true);
 	});
+}
+
+const projectFilters = document.querySelector('[data-project-filters]');
+
+if (projectFilters) {
+	const technologySearch = projectFilters.querySelector('[data-project-technology-search]');
+	const technologyToggle = projectFilters.querySelector('[data-project-toggle]');
+	const technologyOptions = projectFilters.querySelector('[data-project-options]');
+	const resetFilters = projectFilters.querySelector('[data-project-reset]');
+	const projectStatus = projectFilters.querySelector('[data-project-status]');
+	const emptyMessage = projectFilters.querySelector('[data-project-empty]');
+	const projectCards = [...document.querySelectorAll('[data-project-list] .project-card')];
+	const normalizeText = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('fr');
+	const technologyMap = new Map();
+	projectCards.forEach((card) => {
+		card.querySelectorAll('.tech-tag').forEach((tag) => {
+			const label = tag.querySelector(':scope > span');
+			if (label && !technologyMap.has(label.textContent.trim())) {
+				technologyMap.set(label.textContent.trim(), tag.querySelector('i, img')?.cloneNode(true) ?? null);
+			}
+		});
+	});
+	const technologies = [...technologyMap].map(([name, icon]) => ({ name, icon }))
+		.sort((first, second) => first.name.localeCompare(second.name, 'fr'));
+	let selectedTechnology = '';
+	let activeOptionIndex = -1;
+	let isOptionsOpen = false;
+	let visibleOptions = [];
+
+	const filterProjects = () => {
+		let visibleCount = 0;
+
+		projectCards.forEach((card) => {
+			const technologies = [...card.querySelectorAll('.tech-tag > span')].map((label) => label.textContent.trim());
+			const isVisible = !selectedTechnology || technologies.includes(selectedTechnology);
+
+			card.hidden = !isVisible;
+			if (isVisible) visibleCount += 1;
+		});
+
+		projectStatus.textContent = `${visibleCount} ${visibleCount === 1 ? 'projet trouvé' : 'projets trouvés'}`;
+		emptyMessage.hidden = visibleCount !== 0;
+	};
+
+	const renderTechnologyOptions = () => {
+		const searchTerm = normalizeText(technologySearch.value.trim());
+		visibleOptions = technologies.filter((technology) => normalizeText(technology.name).includes(searchTerm));
+		technologyOptions.replaceChildren();
+		activeOptionIndex = Math.min(activeOptionIndex, visibleOptions.length - 1);
+
+		if (!visibleOptions.length) {
+			const emptyOption = document.createElement('div');
+			emptyOption.className = 'project-filter-no-options';
+			emptyOption.textContent = 'Aucune technologie trouvée';
+			technologyOptions.append(emptyOption);
+		} else {
+			visibleOptions.forEach((technology, index) => {
+				const option = document.createElement('button');
+				option.className = 'project-filter-option';
+				option.type = 'button';
+				option.setAttribute('role', 'option');
+				option.setAttribute('aria-selected', String(technology.name === selectedTechnology));
+				option.classList.toggle('is-active', index === activeOptionIndex);
+				option.dataset.technology = technology.name;
+				if (technology.icon) option.append(technology.icon.cloneNode(true));
+				const label = document.createElement('span');
+				label.textContent = technology.name;
+				option.append(label);
+				technologyOptions.append(option);
+			});
+		}
+
+		technologyOptions.hidden = !isOptionsOpen;
+		technologySearch.setAttribute('aria-expanded', String(isOptionsOpen));
+		technologyToggle.setAttribute('aria-expanded', String(isOptionsOpen));
+		resetFilters.hidden = !selectedTechnology && !technologySearch.value;
+		const activeOption = technologyOptions.querySelector('.project-filter-option.is-active');
+		if (activeOption) technologySearch.setAttribute('aria-activedescendant', activeOption.id || (activeOption.id = `technology-option-${activeOptionIndex}`));
+		else technologySearch.removeAttribute('aria-activedescendant');
+	};
+
+	const closeTechnologyOptions = (restoreSelection = false) => {
+		isOptionsOpen = false;
+		activeOptionIndex = -1;
+		if (restoreSelection) technologySearch.value = selectedTechnology;
+		renderTechnologyOptions();
+	};
+
+	const chooseTechnology = (technology) => {
+		selectedTechnology = technology;
+		technologySearch.value = technology;
+		closeTechnologyOptions();
+		filterProjects();
+	};
+
+	technologySearch.addEventListener('focus', () => {
+		if (selectedTechnology) technologySearch.select();
+	});
+
+	technologySearch.addEventListener('input', () => {
+		selectedTechnology = '';
+		activeOptionIndex = -1;
+		isOptionsOpen = true;
+		renderTechnologyOptions();
+		filterProjects();
+	});
+
+	technologySearch.addEventListener('keydown', (event) => {
+		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+			event.preventDefault();
+			if (!isOptionsOpen) isOptionsOpen = true;
+			renderTechnologyOptions();
+			if (visibleOptions.length) {
+				const direction = event.key === 'ArrowDown' ? 1 : -1;
+				activeOptionIndex = (activeOptionIndex + direction + visibleOptions.length) % visibleOptions.length;
+				renderTechnologyOptions();
+				technologyOptions.querySelector('.project-filter-option.is-active')?.scrollIntoView({ block: 'nearest' });
+			}
+		} else if (event.key === 'Enter' && isOptionsOpen && visibleOptions.length) {
+			event.preventDefault();
+			chooseTechnology(visibleOptions[activeOptionIndex >= 0 ? activeOptionIndex : 0].name);
+		} else if (event.key === 'Escape' && isOptionsOpen) {
+			event.preventDefault();
+			closeTechnologyOptions(true);
+		}
+	});
+
+	technologyToggle.addEventListener('click', () => {
+		isOptionsOpen = !isOptionsOpen;
+		activeOptionIndex = -1;
+		if (isOptionsOpen) technologySearch.value = '';
+		renderTechnologyOptions();
+		if (isOptionsOpen) technologySearch.focus();
+	});
+
+	technologyOptions.addEventListener('mousedown', (event) => event.preventDefault());
+	technologyOptions.addEventListener('click', (event) => {
+		const option = event.target.closest('[data-technology]');
+		if (option) chooseTechnology(option.dataset.technology);
+	});
+
+	resetFilters.addEventListener('click', () => {
+		selectedTechnology = '';
+		technologySearch.value = '';
+		closeTechnologyOptions();
+		filterProjects();
+		technologySearch.focus();
+	});
+
+	document.addEventListener('pointerdown', (event) => {
+		if (!projectFilters.querySelector('.project-filter-combobox').contains(event.target) && isOptionsOpen) {
+			closeTechnologyOptions(true);
+		}
+	});
+
+	renderTechnologyOptions();
+	filterProjects();
 }
 
 const paintPalette = document.querySelector('.paint-palette');
@@ -251,6 +427,48 @@ if (themeToggle) {
 	});
 }
 
+const getTrailStyleAt = (x, y) => {
+	const root = document.documentElement;
+	const target = document.elementFromPoint(x, y);
+	const rootStyles = getComputedStyle(root);
+	const selectedPaint = root.classList.contains('drawing-mode')
+		? rootStyles.getPropertyValue('--selected-paint').trim()
+		: '';
+	if (selectedPaint) {
+		return {
+			color: selectedPaint,
+			outline: rootStyles.getPropertyValue('--trail-outline-color').trim()
+		};
+	}
+
+	if (!target) {
+		return {
+			color: rootStyles.getPropertyValue('--trail-color').trim(),
+			outline: rootStyles.getPropertyValue('--trail-outline-color').trim()
+		};
+	}
+
+	const gradientSurface = target.closest('.hero, .projects-hero');
+	if (gradientSurface) {
+		const gradientStyles = getComputedStyle(gradientSurface);
+		const bounds = gradientSurface.getBoundingClientRect();
+		const isStart = bounds.height ? (y - bounds.top) / bounds.height < 0.5 : true;
+		const color = gradientStyles.getPropertyValue(isStart ? '--trail-start-color' : '--trail-end-color').trim();
+		if (color) {
+			return {
+				color,
+				outline: gradientStyles.getPropertyValue(isStart ? '--trail-start-outline-color' : '--trail-end-outline-color').trim()
+			};
+		}
+	}
+
+	const targetStyles = getComputedStyle(target);
+	return {
+		color: targetStyles.getPropertyValue('--trail-color').trim() || rootStyles.getPropertyValue('--trail-color').trim(),
+		outline: targetStyles.getPropertyValue('--trail-outline-color').trim() || rootStyles.getPropertyValue('--trail-outline-color').trim()
+	};
+};
+
 if (!matchMedia('(hover: none)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
 	const LIFE = 700;
 	const canvas = document.createElement('canvas');
@@ -277,48 +495,6 @@ if (!matchMedia('(hover: none)').matches && !matchMedia('(prefers-reduced-motion
 
 		let marks = [];
 		let previousPoint = null;
-		const root = document.documentElement;
-		const getTrailStyle = (x, y) => {
-			const target = document.elementFromPoint(x, y);
-			const rootStyles = getComputedStyle(root);
-			const selectedPaint = root.classList.contains('drawing-mode')
-				? rootStyles.getPropertyValue('--selected-paint').trim()
-				: '';
-			if (selectedPaint) {
-				return {
-					color: selectedPaint,
-					outline: rootStyles.getPropertyValue('--trail-outline-color').trim()
-				};
-			}
-
-			if (!target) {
-				return {
-					color: rootStyles.getPropertyValue('--trail-color').trim(),
-					outline: rootStyles.getPropertyValue('--trail-outline-color').trim()
-				};
-			}
-
-			const gradientSurface = target.closest('.hero, .projects-hero');
-			if (gradientSurface) {
-				const gradientStyles = getComputedStyle(gradientSurface);
-				const bounds = gradientSurface.getBoundingClientRect();
-				const progress = bounds.height ? (y - bounds.top) / bounds.height : 0;
-				const isStart = progress < 0.5;
-				const color = gradientStyles.getPropertyValue(isStart ? '--trail-start-color' : '--trail-end-color').trim();
-				if (color) {
-					return {
-						color,
-						outline: gradientStyles.getPropertyValue(isStart ? '--trail-start-outline-color' : '--trail-end-outline-color').trim()
-					};
-				}
-			}
-
-			const targetStyles = getComputedStyle(target);
-			return {
-				color: targetStyles.getPropertyValue('--trail-color').trim() || rootStyles.getPropertyValue('--trail-color').trim(),
-				outline: targetStyles.getPropertyValue('--trail-outline-color').trim() || rootStyles.getPropertyValue('--trail-outline-color').trim()
-			};
-		};
 
 		const createMark = (x, y, time, angle, trailStyle, scale = 1) => {
 			const markWidth = (10 + Math.random() * 8) * scale;
@@ -354,7 +530,7 @@ if (!matchMedia('(hover: none)').matches && !matchMedia('(prefers-reduced-motion
 
 			pointerEvents.forEach((pointerEvent) => {
 				const currentPoint = { x: pointerEvent.clientX, y: pointerEvent.clientY };
-				const trailStyle = getTrailStyle(currentPoint.x, currentPoint.y);
+				const trailStyle = getTrailStyleAt(currentPoint.x, currentPoint.y);
 				if (!previousPoint) {
 					createMark(currentPoint.x, currentPoint.y, eventTime, 0, trailStyle);
 					previousPoint = currentPoint;
@@ -511,18 +687,24 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
 		const letters = [];
 		textNodes.forEach((textNode) => {
 			const fragment = document.createDocumentFragment();
-			Array.from(textNode.textContent).forEach((character) => {
-				if (/\s/u.test(character)) {
-					fragment.append(document.createTextNode(character));
+			const wordsAndSpaces = textNode.textContent.match(/\s+|[^\s]+/gu) ?? [];
+			wordsAndSpaces.forEach((wordOrSpace) => {
+				if (/^\s+$/u.test(wordOrSpace)) {
+					fragment.append(document.createTextNode(wordOrSpace));
 					return;
 				}
 
-				const letter = document.createElement('span');
-				letter.className = 'title-char';
-				letter.setAttribute('aria-hidden', 'true');
-				letter.textContent = character;
-				fragment.append(letter);
-				letters.push({ element: letter, character, lastStep: -1 });
+				const word = document.createElement('span');
+				word.className = 'title-word';
+				Array.from(wordOrSpace).forEach((character) => {
+					const letter = document.createElement('span');
+					letter.className = 'title-char';
+					letter.setAttribute('aria-hidden', 'true');
+					letter.textContent = character;
+					word.append(letter);
+					letters.push({ element: letter, character, lastStep: -1 });
+				});
+				fragment.append(word);
 			});
 			textNode.replaceWith(fragment);
 		});
