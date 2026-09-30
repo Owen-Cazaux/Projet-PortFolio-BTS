@@ -1,8 +1,9 @@
 services:
   app:
+    image: portfolio:1.0
     build: .
     ports:
-      - "${APP_PORT}:8000"      
-    env_file:
-      - .env
+      - "${APP_PORT:-8080}:10000"
+    environment:
+      PORT: "10000"
 
