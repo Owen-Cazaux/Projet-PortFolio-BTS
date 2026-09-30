@@ -103,14 +103,14 @@ final class PortfolioPagesTest extends TestCase
             'bot-discord.php' => [
                 '2026',
                 'Bot discord',
-                "Création de commandes dans le but de facilité l'assignation de rôles discord à de grand nombre d'utilisateur.",
+                'Création de commandes pour faciliter l’attribution de rôles Discord à un grand nombre d’utilisateurs.',
                 'Python',
                 'Discord.py',
             ],
             'refonte-ui-ux.php' => [
                 '2026',
                 'Refonte UI/UX',
-                "Dashboard unique et d'un projet interne d'entreprise",
+                'Refonte d’un dashboard pour un projet interne d’entreprise.',
                 'Symfony',
                 'Vue',
                 'Tailwind/CSS',
@@ -128,6 +128,63 @@ final class PortfolioPagesTest extends TestCase
                 self::assertStringContainsString($info, $projects);
             }
         }
+    }
+
+    public function testProjectsPageRendersSearchableTechnologyCombobox(): void
+    {
+        $projects = $this->renderPage('Pages/MesProjets.php');
+
+        self::assertStringContainsString('role="combobox"', $projects);
+        self::assertStringContainsString('aria-controls="project-technology-options"', $projects);
+        self::assertStringContainsString('data-project-technology-search', $projects);
+        self::assertStringContainsString('data-project-options', $projects);
+        self::assertStringContainsString('data-project-toggle', $projects);
+        self::assertStringContainsString('data-project-reset', $projects);
+        self::assertStringContainsString('data-project-empty', $projects);
+
+        $script = file_get_contents(self::PROJECT_ROOT . '/js/script.js');
+        self::assertNotFalse($script);
+        self::assertStringContainsString("tag.querySelector('i, img')?.cloneNode(true)", $script);
+    }
+
+    public function testContactPageRendersMessageFormAndCvSlot(): void
+    {
+        $contact = $this->renderPage('Pages/Contact.php');
+
+        self::assertStringContainsString('data-contact-form', $contact);
+        self::assertStringContainsString('name="email" type="email"', $contact);
+        self::assertStringContainsString('name="message"', $contact);
+        self::assertStringContainsString('contact-cv', $contact);
+        self::assertStringContainsString('Le PDF du CV n’est pas encore disponible.', $contact);
+        self::assertStringNotContainsString('href="../assets/cv-owen-cazaux.pdf"', $contact);
+    }
+
+    public function testSkillsAreGroupedByDevelopmentArea(): void
+    {
+        $home = $this->renderPage('index.php');
+
+        self::assertStringContainsString('Développement frontend', $home);
+        self::assertStringContainsString('03 compétences', $home);
+        self::assertStringContainsString('data-skill="Vue.js"', $home);
+        self::assertStringContainsString('data-code-style="vue"', $home);
+        self::assertStringContainsString('data-skill="PHP / Symfony"', $home);
+        self::assertStringContainsString('Données &amp; outils', $home);
+        self::assertStringContainsString('04 compétences', $home);
+        self::assertStringContainsString('data-skill="Gestion de projet"', $home);
+        self::assertStringContainsString('data-skill="UI/UX via Figma"', $home);
+        self::assertStringNotContainsString('skills-tab-other', $home);
+        self::assertStringNotContainsString('Travail en équipe', $home);
+    }
+
+    public function testAnimatedHeadingsKeepWordsTogether(): void
+    {
+        $script = file_get_contents(self::PROJECT_ROOT . '/js/script.js');
+        $stylesheet = file_get_contents(self::PROJECT_ROOT . '/css/style.css');
+
+        self::assertNotFalse($script);
+        self::assertNotFalse($stylesheet);
+        self::assertStringContainsString("word.className = 'title-word'", $script);
+        self::assertStringContainsString('.title-word { display: inline-block; white-space: nowrap; }', $stylesheet);
     }
 
     private function renderPage(string $route): string
