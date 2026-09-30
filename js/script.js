@@ -281,7 +281,9 @@ if (!matchMedia('(hover: none)').matches && !matchMedia('(prefers-reduced-motion
 		const getTrailStyle = (x, y) => {
 			const target = document.elementFromPoint(x, y);
 			const rootStyles = getComputedStyle(root);
-			const selectedPaint = rootStyles.getPropertyValue('--selected-paint').trim();
+			const selectedPaint = root.classList.contains('drawing-mode')
+				? rootStyles.getPropertyValue('--selected-paint').trim()
+				: '';
 			if (selectedPaint) {
 				return {
 					color: selectedPaint,
